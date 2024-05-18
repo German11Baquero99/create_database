@@ -1,0 +1,75 @@
+{
+"placa": "ABC-123",
+"numero_serie": "123456789",
+"modelo": "2002",
+"marca": "Toyota",
+"kilometraje": 5000,
+"tipo": "sedan"
+}
+
+const MongoClient = requiere('mongodb').MongoClient; 
+const url = 'mongodb://localhost:27017';
+const dbName= 'nombre_de_tu_base_de_datos';
+
+MongoClient.connect(url, function(err,client){
+  const db = client.db(dbName);
+
+const carros = [
+    {"placa": "ABC-123", "numero_serie": "123456789", "modelo:"
+"2022", "marca": "Toyota", "kilometraje": "5000", "tipo": "sedan",}
+    {"placa": "DEF-456", "numero_serie": "234567890", "modelo:"
+"2021", "marca": "Honda", "kilometraje": "10000", "tipo": "suv",}
+    {"placa": "GHI-789", "numero_serie": "345678901", "modelo:"
+"2020", "marca": "Ford", "kilometraje": "8000", "tipo": "camioneta",}
+    {"placa": "JKL-012", "numero_serie": "456789012", "modelo:"
+"2022", "marca": "Nissan", "kilometraje": "2000", "tipo": "sedan",}
+    {"placa": "MNO-345", "numero_serie": "567890123", "modelo:"
+"2019", "marca": "Chevrolet", "kilometraje": "15000", "tipo": "hatchback",}
+];
+
+db.collection('carros').insertMany(carros, function(err,result) {
+    if (err) throw err;
+    console.log('$ {result.insertedCount} carros insertados.');
+    client.close();
+ });
+});
+
+const MongoClient = requiere('mongodb').MongoClient;
+
+const url = 'mongodb://localhost:27017';
+const dbName= 'nombre_de_tu_base_de_datos';
+
+MongoClient.connect(url, function(err,client){
+  const db = client.db(dbName);
+
+db.collection('carros').find({}).toArray(function(err,result) {
+    if (err) throw err;
+    console.log(result);
+    client.close();
+ });
+});
+
+db.collection('carros').find({marca: 'Toyota'}).toArray(function(err,result) {
+    if (err) throw err;
+    console.log(result);
+    client.close();
+ });
+
+const MongoClient = requiere('mongodb').MongoClient;
+
+const url = 'mongodb://localhost:27017';
+const dbName= 'nombre_de_tu_base_de_datos';
+
+MongoClient.connect(url, function(err,client){
+  const db = client.db(dbName);
+
+db.collection('carros').updateOne(
+ {placa: 'ABC-123'},
+ s{$set: {kilometraje: 6000}},
+ function (err, result){
+    if (err) throw err;
+    console.log('${result.modifiedCount} carros actualizados');
+    client.close();
+   }
+  );
+});
